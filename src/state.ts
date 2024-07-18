@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import type { RobotClient, StreamClient, BaseClient } from '@viamrobotics/sdk';
+import type { RobotClient, StreamClient, BaseClient, SensorClient } from '@viamrobotics/sdk';
 import {
   getRobotClient,
   getBaseClient,
   getStreamClient,
   //getStream,
+  getSensorClient,
   type RobotCredentials,
 } from './client.js';
 
@@ -25,8 +26,9 @@ interface ClientStateTransitioning {
 interface ClientStateConnected {
   status: typeof CONNECTED;
   client: RobotClient;
-  baseClient: BaseClient;
-  streamClient: StreamClient;
+  baseClient: BaseClient | undefined;
+  streamClient: StreamClient | undefined;
+  sensorClient: SensorClient | undefined;
 }
 
 type ClientState =
@@ -41,6 +43,7 @@ export interface Store {
   client?: RobotClient;
   streamClient?: StreamClient;
   baseClient?: BaseClient;
+  sensorClient?: SensorClient;
   connectOrDisconnect: (credentials: RobotCredentials) => unknown;
 }
 
@@ -57,9 +60,10 @@ export const useStore = (): Store => {
 
       getRobotClient(credentials)
         .then((client) => {
-          const streamClient = getStreamClient(client);
-          const baseClient = getBaseClient(client);
-          setState({ status: CONNECTED, client, baseClient, streamClient });
+          //const streamClient = getStreamClient(client);
+          //const baseClient = getBaseClient(client);
+          const sensorClient = getSensorClient(client);
+          setState({ status: CONNECTED, client, streamClient:undefined, baseClient:undefined, sensorClient });
         })
         .catch((error: unknown) => setState({ status: DISCONNECTED, error }));
     } else if (state.status === CONNECTED) {
@@ -78,6 +82,7 @@ export const useStore = (): Store => {
     client: state.status === CONNECTED ? state.client : undefined,
     baseClient: state.status === CONNECTED ? state.baseClient : undefined,
     streamClient: state.status === CONNECTED ? state.streamClient : undefined,
+    sensorClient: state.status === CONNECTED ? state.sensorClient : undefined,
   };
 };
 

@@ -59,6 +59,30 @@ export const ConnectForm = (props: ConnectFormProps): JSX.Element => {
     event.preventDefault();
   };
 
+  if (status === CONNECTED) {
+    return (
+      <form className="flex flex-col p-4 w-96" onSubmit={handleSubmit}>
+        <label className="flex flex-col mb-1">
+          Remote Address
+          <input
+            type="text"
+            className="px-1 border-solid border-2 border-black"
+            value={hostname}
+            onChange={handleHost}
+            disabled={true}
+          />
+        </label>
+        <button
+          type="submit"
+          disabled={disabled}
+          className=" w-32 border-solid border-2 border-black"
+        >
+          {buttonText}
+        </button>
+      </form>
+    );
+  }
+
   return (
     <form className="flex flex-col p-4 w-96" onSubmit={handleSubmit}>
       <label className="flex flex-col mb-1">
