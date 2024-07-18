@@ -6,7 +6,8 @@
     "jsx": "react-jsx",
 
     // TODO(mc, 2023-04-06): remove overrides to default to error, fix issues
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+    "noPropertyAccessFromIndexSignature": false,
   },
   "include": ["src/**/*.tsx", "src/**/*.ts"],
 }

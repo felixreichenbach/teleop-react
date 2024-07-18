@@ -7,7 +7,8 @@ import {
 
 export interface RobotCredentials {
   hostname: string;
-  secret: string;
+  keyID: string;
+  key: string;
 }
 
 /**
@@ -19,17 +20,18 @@ export interface RobotCredentials {
 export const getRobotClient = async (
   credentials: RobotCredentials
 ): Promise<RobotClient> => {
-  const { hostname, secret } = credentials;
+  const { hostname, keyID, key } = credentials;
 
   return createRobotClient({
-    authEntity: hostname,
-    host: hostname,
+    host:hostname,
     credential: {
-      type: 'robot-location-secret',
-      payload: secret,
-    },
+      type: 'api-key' 
+      /* Replace "<API-KEY>" (including brackets) with your machine's api key */,
+      payload: key,
+    } 
+      /* Replace "<API-KEY-ID>" (including brackets) with your machine's api key id */,
+    authEntity: keyID,
     signalingAddress: 'https://app.viam.com:443',
-    iceServers: [{ urls: 'stun:global.stun.twilio.com:3478' }],
   });
 };
 
