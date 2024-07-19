@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Data } from "../utils/sample-data";
 import type { SensorClient } from "@viamrobotics/sdk";
 import { Line } from "react-chartjs-2";
 import {
@@ -30,28 +29,58 @@ export interface SensorReadingsProps {
 }
 
 // Sensor reading structure
-interface SensorReading {
-  value?: number;
-  timestamp?: Date;
-}
+type Reading = {
+  label: string;
+  value: number;
+};
 
 export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
   const chartRef =
     useRef<ChartJS<"line", (number | undefined)[], unknown>>(null);
   const { sensorClient } = props;
-  /*
-  const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([
-    { value: 0, timestamp: new Date() },
-  ]);
-  
-*/
+
+  const chartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  const [readings, setReadings] = useState<Reading[]>([]); // ADD EMPTY ARRAY
+  const [options, setOptions] = useState(chartOptions); // REMOVED BRACKETS
+
+  const interval = useRef<number>();
+
+  useEffect(() => {
+    interval.current = setInterval(() => {
+      sensorClient?.getReadings().then((reading) => {
+        if (reading["a"] && typeof reading["a"] === "number") {
+          const value = reading["a"];
+          setReadings((prevData) => {
+            const newData = [...prevData];
+            if (newData.length === 10) {
+              newData.shift();
+            }
+            newData.push({
+              label: Date().toString(),
+              value: value, //Math.floor(Math.random() * 100),
+            });
+            return newData;
+          });
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval.current);
+  }, [readings]);
+
   // Charts Data
-  const [chartData, setChartData] = useState({
-    labels: [], //sensorReadings.map((reading) => reading.timestamp),
+  const chartData = {
+    labels: readings.map((reading) => reading.label),
     datasets: [
       {
         label: "Users Gained ",
-        data: [], //sensorReadings.map((reading) => reading.value),
+        data: readings.map((reading) => reading.value),
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",
@@ -64,29 +93,12 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
         tension: 0.2,
       },
     ],
-  });
-
-  useEffect(() => {
-    //Implementing the setInterval method
-    const interval = setInterval(() => {
-      sensorClient?.getReadings().then((reading) => {
-        if (reading["a"] && typeof reading["a"] === "number") {
-          chartRef.current?.data.labels?.push(Date());
-          chartRef.current?.data.datasets?.[0]?.data?.push(
-            reading["a"] as number
-          );
-          chartRef.current?.update();
-        }
-      });
-    }, 1000);
-    //Clearing the interval
-    return () => clearInterval(interval);
-  }); //[sensorReadings]);
+  };
 
   return (
     <div>
       <p>Sensor Readings</p>
-      <Line ref={chartRef} data={chartData} />
+      <Line ref={chartRef} data={chartData} options={options} />
     </div>
   );
 };
