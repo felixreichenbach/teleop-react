@@ -55,8 +55,8 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
   useEffect(() => {
     interval.current = setInterval(() => {
       sensorClient?.getReadings().then((reading) => {
-        if (reading["a"] && typeof reading["a"] === "number") {
-          const value = reading["a"];
+        if (reading["b"] && typeof reading["b"] === "number") {
+          const value = reading["b"];
           setReadings((prevData) => {
             const newData = [...prevData];
             if (newData.length === 10) {

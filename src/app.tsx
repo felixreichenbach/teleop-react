@@ -19,25 +19,30 @@ export const App = (): JSX.Element => {
   const [motionState, requestMotion] = useMotionControls(baseClient);
 
   return (
-    <>
-      <ConnectForm status={status} onSubmit={connectOrDisconnect} />
+    <div className="max-w-7xl mx-auto grid ">
+      <h1 className="text-3xl font-bold">Viam TeleOp</h1>
+      <div className="bg-neutral-100 border-2 rounded-xl">
+        <ConnectForm status={status} onSubmit={connectOrDisconnect} />
+      </div>
       {streamClient ? (
-        <VideoStream stream={stream}>
-          {baseClient ? (
-            <MotionArrows
-              motionState={motionState}
-              requestMotion={requestMotion}
-            />
-          ) : null}
-        </VideoStream>
+        <div className="bg-neutral-100 border-2 rounded-xl">
+          <VideoStream stream={stream}>
+            {baseClient ? (
+              <MotionArrows
+                motionState={motionState}
+                requestMotion={requestMotion}
+              />
+            ) : null}
+          </VideoStream>
+        </div>
       ) : null}
-      <>
+      <div className="justify-center">
         {client ? (
           <>
             <SensorReadings sensorClient={sensorClient} />
           </>
         ) : null}
-      </>
-    </>
+      </div>
+    </div>
   );
 };
