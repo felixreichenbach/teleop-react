@@ -7,7 +7,6 @@ This example project allows you to stream a video from a Viam Rover and control 
 First, follow the setup instructions for the repository in `CONTRIBUTING.md`. Then, install development dependencies for the demo and launch a dev server.
 
 ```shell
-cd teleop-react
 npm install
 ```
 
