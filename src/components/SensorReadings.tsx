@@ -63,7 +63,7 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
               newData.shift();
             }
             newData.push({
-              label: Date().toString(),
+              label: new Date().toLocaleTimeString(),
               value: value, //Math.floor(Math.random() * 100),
             });
             return newData;
@@ -94,11 +94,5 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
       },
     ],
   };
-
-  return (
-    <div>
-      <p>Sensor Readings</p>
-      <Line ref={chartRef} data={chartData} options={options} />
-    </div>
-  );
+  return <Line ref={chartRef} data={chartData} options={options} />;
 };
