@@ -7,8 +7,6 @@ export const App = (): JSX.Element => {
   const { machineStatus, sensorClient, machineClient, connectOrDisconnect } =
     useStore();
 
-  console.log(sensorClient);
-
   return (
     <div className="flex flex-col max-w-7xl mx-auto">
       <div>

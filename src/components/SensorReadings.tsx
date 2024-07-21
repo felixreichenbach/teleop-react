@@ -65,7 +65,7 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
             }
             newData.push({
               label: new Date().toLocaleTimeString(),
-              value: Math.floor(Math.random() * 100),
+              value: value, //Math.floor(Math.random() * 100),
             });
             return newData;
           });
