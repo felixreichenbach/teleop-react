@@ -4,6 +4,8 @@ import {
   BaseClient,
   SensorClient,
   type RobotClient,
+  createViamClient,
+  type ViamClient,
 } from '@viamrobotics/sdk';
 
 export interface RobotCredentials {
@@ -33,6 +35,20 @@ export const getRobotClient = async (
       /* Replace "<API-KEY-ID>" (including brackets) with your machine's api key id */,
     authEntity: keyID,
     signalingAddress: 'https://app.viam.com:443',
+  });
+};
+
+// TODO: Add a function to get a ViamClient
+export const getViamClinet = async (  
+  credentials: RobotCredentials
+): Promise<ViamClient> => {
+  const { keyID, key } = credentials;
+  return createViamClient({
+    credential: {
+      type: 'api-key',
+      authEntity: keyID,
+      payload: key,
+    },
   });
 };
 

@@ -1,29 +1,45 @@
-import { useEffect, useRef, useState } from 'react';
-import type { RobotClient, StreamClient, BaseClient, SensorClient } from '@viamrobotics/sdk';
+import { useEffect, useRef, useState } from "react";
+import type {
+  ViamClient,
+  RobotClient,
+  StreamClient,
+  BaseClient,
+  SensorClient,
+} from "@viamrobotics/sdk";
 import {
   getRobotClient,
-  getBaseClient,
-  getStreamClient,
+  getViamClinet,
+  //getBaseClient,
+  //getStreamClient,
   //getStream,
   getSensorClient,
   type RobotCredentials,
-} from './client.js';
+} from "./client.js";
 
-export const DISCONNECTED = 'disconnected';
-export const CONNECTING = 'connecting';
-export const DISCONNECTING = 'disconnecting';
-export const CONNECTED = 'connected';
+export const DISCONNECTED = "disconnected";
+export const CONNECTING = "connecting";
+export const DISCONNECTING = "disconnecting";
+export const CONNECTED = "connected";
 
-interface ClientStateDisconnected {
+interface MachineClientStateDisconnected {
   status: typeof DISCONNECTED;
   error?: unknown;
 }
 
-interface ClientStateTransitioning {
+interface ViamClientStateDisconnected {
+  status: typeof DISCONNECTED;
+  error?: unknown;
+}
+
+interface MachineClientStateTransitioning {
   status: typeof CONNECTING | typeof DISCONNECTING;
 }
 
-interface ClientStateConnected {
+interface ViamClientStateTransitioning {
+  status: typeof CONNECTING | typeof DISCONNECTING;
+}
+
+interface MachineClientStateConnected {
   status: typeof CONNECTED;
   client: RobotClient;
   baseClient: BaseClient | undefined;
@@ -31,16 +47,29 @@ interface ClientStateConnected {
   sensorClient: SensorClient | undefined;
 }
 
-type ClientState =
-  | ClientStateDisconnected
-  | ClientStateTransitioning
-  | ClientStateConnected;
+interface ViamClientStateConnected {
+  status: typeof CONNECTED;
+  client: ViamClient;
+}
 
-export type ClientStatus = ClientState['status'];
+type MachineClientState =
+  | MachineClientStateDisconnected
+  | MachineClientStateTransitioning
+  | MachineClientStateConnected;
+
+type ViamClientState =
+  | ViamClientStateDisconnected
+  | ViamClientStateTransitioning
+  | ViamClientStateConnected;
+
+export type MachineClientStatus = MachineClientState["status"];
+export type ViamClientStatus = ViamClientState["status"];
 
 export interface Store {
-  status: ClientStatus;
-  client?: RobotClient;
+  machineStatus: MachineClientStatus;
+  machineClient?: RobotClient;
+  viamStatus: MachineClientStatus;
+  viamClient?: ViamClient;
   streamClient?: StreamClient;
   baseClient?: BaseClient;
   sensorClient?: SensorClient;
@@ -48,41 +77,72 @@ export interface Store {
 }
 
 export const useStore = (): Store => {
-  const [state, setState] = useState<ClientState>({ status: DISCONNECTED });
+  const [machineState, setMachineState] = useState<MachineClientState>({
+    status: DISCONNECTED,
+  });
+  const [viamState, setViamState] = useState<ViamClientState>({
+    status: DISCONNECTED,
+  });
 
-  if (state.status === DISCONNECTED && state.error) {
-    console.warn('Connection error', state.error);
+  if (machineState.status === DISCONNECTED && machineState.error) {
+    console.warn("Connection error", machineState.error);
   }
 
   const connectOrDisconnect = (credentials: RobotCredentials): void => {
-    if (state.status === DISCONNECTED) {
-      setState({ status: CONNECTING });
-
+    console.log("Connecting to machine");
+    if (machineState.status === DISCONNECTED) {
+      console.log("Connecting to machine");
+      setMachineState({ status: CONNECTING });
       getRobotClient(credentials)
         .then((client) => {
           //const streamClient = getStreamClient(client);
           //const baseClient = getBaseClient(client);
           const sensorClient = getSensorClient(client);
-          setState({ status: CONNECTED, client, streamClient:undefined, baseClient:undefined, sensorClient });
+          console.log("Connected to machine", sensorClient);
+          setMachineState({
+            status: CONNECTED,
+            client,
+            streamClient: undefined,
+            baseClient: undefined,
+            sensorClient,
+          });
         })
-        .catch((error: unknown) => setState({ status: DISCONNECTED, error }));
-    } else if (state.status === CONNECTED) {
-      setState({ status: DISCONNECTING });
+        .catch((error: unknown) =>
+          setMachineState({ status: DISCONNECTED, error })
+        );
+    } else if (machineState.status === CONNECTED) {
+      setMachineState({ status: DISCONNECTING });
 
-      state.client
+      machineState.client
         .disconnect()
-        .then(() => setState({ status: DISCONNECTED }))
-        .catch((error: unknown) => setState({ status: DISCONNECTED, error }));
+        .then(() => setMachineState({ status: DISCONNECTED }))
+        .catch((error: unknown) =>
+          setMachineState({ status: DISCONNECTED, error })
+        );
+    }
+
+    // TODO: Get a ViamClient
+    if (viamState.status === DISCONNECTED) {
+      console.log("Connecting to Viam");
+      getViamClinet(credentials)
+        .then((client) => {
+          setViamState({ status: CONNECTED, client });
+        })
+        .catch((error: unknown) =>
+          setViamState({ status: DISCONNECTED, error })
+        );
     }
   };
 
   return {
-    connectOrDisconnect,
-    status: state.status,
-    client: state.status === CONNECTED ? state.client : undefined,
-    baseClient: state.status === CONNECTED ? state.baseClient : undefined,
-    streamClient: state.status === CONNECTED ? state.streamClient : undefined,
-    sensorClient: state.status === CONNECTED ? state.sensorClient : undefined,
+    viamStatus: viamState.status,
+    viamClient: viamState.status === CONNECTED ? viamState.client : undefined,
+    machineStatus: machineState.status,
+    machineClient:
+      machineState.status === CONNECTED ? machineState.client : undefined,
+    sensorClient:
+      machineState.status === CONNECTED ? machineState.sensorClient : undefined,
+    connectOrDisconnect: connectOrDisconnect,
   };
 };
 
