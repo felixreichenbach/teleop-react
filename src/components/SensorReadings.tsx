@@ -54,6 +54,7 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
 
   useEffect(() => {
     interval.current = setInterval(() => {
+      console.log(sensorClient);
       sensorClient?.getReadings().then((reading) => {
         if (reading["b"] && typeof reading["b"] === "number") {
           const value = reading["b"];
@@ -64,7 +65,7 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
             }
             newData.push({
               label: new Date().toLocaleTimeString(),
-              value: value, //Math.floor(Math.random() * 100),
+              value: Math.floor(Math.random() * 100),
             });
             return newData;
           });
