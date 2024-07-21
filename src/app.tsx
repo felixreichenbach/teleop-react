@@ -2,10 +2,16 @@ import { ConnectForm } from "./components/connect-form.js";
 import { useStore } from "./state.js";
 
 import { SensorReadings } from "./components/SensorReadings.js";
+import { ViamCloud } from "./components/ViamCloud.js";
 
 export const App = (): JSX.Element => {
-  const { machineStatus, sensorClient, machineClient, connectOrDisconnect } =
-    useStore();
+  const {
+    machineStatus,
+    machineClient,
+    sensorClient,
+    viamClient,
+    connectOrDisconnect,
+  } = useStore();
 
   return (
     <div className="flex flex-col max-w-7xl mx-auto">
@@ -16,14 +22,16 @@ export const App = (): JSX.Element => {
         <ConnectForm status={machineStatus} onSubmit={connectOrDisconnect} />
       </div>
       <div>
-        <div className="flex flex-row">
-          <div className="basis-1/2">
-            {machineClient ? (
+        {machineClient ? (
+          <div className="flex flex-row border-2">
+            <div className="basis-1/2 border-2">
               <SensorReadings sensorClient={sensorClient} />
-            ) : null}
+            </div>
+            <div className="basis-1/2 border-2">
+              <ViamCloud viamClient={viamClient} />
+            </div>
           </div>
-          <div className="basis-1/2"></div>
-        </div>
+        ) : null}
       </div>
     </div>
   );

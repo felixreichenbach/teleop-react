@@ -110,15 +110,20 @@ export const useStore = (): Store => {
         .catch((error: unknown) =>
           setMachineState({ status: DISCONNECTED, error })
         );
-    } else if (machineState.status === CONNECTED) {
-      setMachineState({ status: DISCONNECTING });
-
-      machineState.client
-        .disconnect()
-        .then(() => setMachineState({ status: DISCONNECTED }))
-        .catch((error: unknown) =>
-          setMachineState({ status: DISCONNECTED, error })
-        );
+    } else if (
+      machineState.status === CONNECTED &&
+      viamState.status === CONNECTED
+    ) {
+      if (machineState.status === CONNECTED) {
+        setMachineState({ status: DISCONNECTING });
+        machineState.client
+          .disconnect()
+          .then(() => setMachineState({ status: DISCONNECTED }))
+          .catch((error: unknown) =>
+            setMachineState({ status: DISCONNECTED, error })
+          );
+      }
+      // TODO: Disconnect from Viam
     }
 
     // TODO: Get a ViamClient
