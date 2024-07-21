@@ -1,0 +1,101 @@
+{
+  "data": [
+    {
+      "data": { "readings": { "a": 1, "b": 2, "c": 3 } },
+      "metadata": {
+        "organizationId": "d5a854d0-1acf-4287-b83f-9a41a8380a1e",
+        "locationId": "1j0se98dbn",
+        "robotName": "RaspMODBUS",
+        "robotId": "191cbec1-0012-44c6-8f84-847c6a7d0711",
+        "partName": "RaspMODBUS-main",
+        "partId": "64c62e0c-bbe9-44f8-9ec3-d1ac59405ed1",
+        "componentType": "rdk:component:sensor",
+        "componentName": "fake-sensor",
+        "methodName": "Readings",
+        "methodParametersMap": [],
+        "tagsList": ["felix"],
+        "mimeType": "x-application/tabular"
+      },
+      "timeRequested": "2024-07-21T14:25:44.505Z",
+      "timeReceived": "2024-07-21T14:25:44.505Z"
+    },
+    {
+      "data": { "readings": { "a": 1, "b": 2, "c": 3 } },
+      "metadata": {
+        "organizationId": "d5a854d0-1acf-4287-b83f-9a41a8380a1e",
+        "locationId": "1j0se98dbn",
+        "robotName": "RaspMODBUS",
+        "robotId": "191cbec1-0012-44c6-8f84-847c6a7d0711",
+        "partName": "RaspMODBUS-main",
+        "partId": "64c62e0c-bbe9-44f8-9ec3-d1ac59405ed1",
+        "componentType": "rdk:component:sensor",
+        "componentName": "fake-sensor",
+        "methodName": "Readings",
+        "methodParametersMap": [],
+        "tagsList": ["felix"],
+        "mimeType": "x-application/tabular"
+      },
+      "timeRequested": "2024-07-21T14:25:45.505Z",
+      "timeReceived": "2024-07-21T14:25:45.505Z"
+    },
+    {
+      "data": { "readings": { "a": 1, "b": 2, "c": 3 } },
+      "metadata": {
+        "organizationId": "d5a854d0-1acf-4287-b83f-9a41a8380a1e",
+        "locationId": "1j0se98dbn",
+        "robotName": "RaspMODBUS",
+        "robotId": "191cbec1-0012-44c6-8f84-847c6a7d0711",
+        "partName": "RaspMODBUS-main",
+        "partId": "64c62e0c-bbe9-44f8-9ec3-d1ac59405ed1",
+        "componentType": "rdk:component:sensor",
+        "componentName": "fake-sensor",
+        "methodName": "Readings",
+        "methodParametersMap": [],
+        "tagsList": ["felix"],
+        "mimeType": "x-application/tabular"
+      },
+      "timeRequested": "2024-07-21T14:25:46.505Z",
+      "timeReceived": "2024-07-21T14:25:46.505Z"
+    },
+    {
+      "data": { "readings": { "a": 1, "b": 2, "c": 3 } },
+      "metadata": {
+        "organizationId": "d5a854d0-1acf-4287-b83f-9a41a8380a1e",
+        "locationId": "1j0se98dbn",
+        "robotName": "RaspMODBUS",
+        "robotId": "191cbec1-0012-44c6-8f84-847c6a7d0711",
+        "partName": "RaspMODBUS-main",
+        "partId": "64c62e0c-bbe9-44f8-9ec3-d1ac59405ed1",
+        "componentType": "rdk:component:sensor",
+        "componentName": "fake-sensor",
+        "methodName": "Readings",
+        "methodParametersMap": [],
+        "tagsList": ["felix"],
+        "mimeType": "x-application/tabular"
+      },
+      "timeRequested": "2024-07-21T14:25:47.506Z",
+      "timeReceived": "2024-07-21T14:25:47.506Z"
+    },
+    {
+      "data": { "readings": { "a": 1, "b": 2, "c": 3 } },
+      "metadata": {
+        "organizationId": "d5a854d0-1acf-4287-b83f-9a41a8380a1e",
+        "locationId": "1j0se98dbn",
+        "robotName": "RaspMODBUS",
+        "robotId": "191cbec1-0012-44c6-8f84-847c6a7d0711",
+        "partName": "RaspMODBUS-main",
+        "partId": "64c62e0c-bbe9-44f8-9ec3-d1ac59405ed1",
+        "componentType": "rdk:component:sensor",
+        "componentName": "fake-sensor",
+        "methodName": "Readings",
+        "methodParametersMap": [],
+        "tagsList": ["felix"],
+        "mimeType": "x-application/tabular"
+      },
+      "timeRequested": "2024-07-21T14:25:48.505Z",
+      "timeReceived": "2024-07-21T14:25:48.505Z"
+    }
+  ],
+  "count": 5,
+  "last": "669d1a6db385328cfa1a45f5-0"
+}
