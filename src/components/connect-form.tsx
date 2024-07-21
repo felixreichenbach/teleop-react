@@ -9,13 +9,13 @@ import {
   CONNECTING,
   DISCONNECTING,
   CONNECTED,
-  type ClientStatus,
+  type MachineClientStatus,
 } from "../state.js";
 
 import type { RobotCredentials } from "../client.js";
 
 export interface ConnectFormProps {
-  status: ClientStatus;
+  status: MachineClientStatus;
   onSubmit: (credentials: RobotCredentials) => unknown;
 }
 
