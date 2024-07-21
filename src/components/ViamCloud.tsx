@@ -31,11 +31,11 @@ export function ViamCloud(props: ViamCloudProps): JSX.Element {
       console.log(JSON.stringify(data));
       return data;
     });
-  }, [data]);
+  }, []);
 
   return (
     <div className="">
-      <p className="text-2xl font-bold text-center">{JSON.stringify(data)}</p>
+      <p className="text-xs text-center">{JSON.stringify(data)}</p>
     </div>
   );
 }
