@@ -39,6 +39,7 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
     useRef<ChartJS<"line", (number | undefined)[], unknown>>(null);
   const { sensorClient } = props;
 
+  // Chart options
   const chartOptions = {
     scales: {
       y: {
@@ -54,7 +55,6 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
 
   useEffect(() => {
     interval.current = setInterval(() => {
-      console.log(sensorClient);
       sensorClient?.getReadings().then((reading) => {
         if (reading["b"] && typeof reading["b"] === "number") {
           const value = reading["b"];
@@ -80,7 +80,7 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
     labels: readings.map((reading) => reading.label),
     datasets: [
       {
-        label: "Users Gained ",
+        label: `fake-sensor "b"`,
         data: readings.map((reading) => reading.value),
         backgroundColor: [
           "rgba(75,192,192,1)",
@@ -95,5 +95,10 @@ export const SensorReadings = (props: SensorReadingsProps): JSX.Element => {
       },
     ],
   };
-  return <Line ref={chartRef} data={chartData} options={options} />;
+  return (
+    <div>
+      <p className="text-xs text-center">Readings over the last 10 seconds</p>
+      <Line ref={chartRef} data={chartData} options={options} />
+    </div>
+  );
 };

@@ -98,7 +98,6 @@ export const useStore = (): Store => {
           //const streamClient = getStreamClient(client);
           //const baseClient = getBaseClient(client);
           const sensorClient = getSensorClient(client);
-          console.log("Connected to machine", sensorClient);
           setMachineState({
             status: CONNECTED,
             client,
@@ -110,18 +109,23 @@ export const useStore = (): Store => {
         .catch((error: unknown) =>
           setMachineState({ status: DISCONNECTED, error })
         );
-    } else if (machineState.status === CONNECTED) {
-      setMachineState({ status: DISCONNECTING });
-
-      machineState.client
-        .disconnect()
-        .then(() => setMachineState({ status: DISCONNECTED }))
-        .catch((error: unknown) =>
-          setMachineState({ status: DISCONNECTED, error })
-        );
+    } else if (
+      machineState.status === CONNECTED &&
+      viamState.status === CONNECTED
+    ) {
+      if (machineState.status === CONNECTED) {
+        setMachineState({ status: DISCONNECTING });
+        machineState.client
+          .disconnect()
+          .then(() => setMachineState({ status: DISCONNECTED }))
+          .catch((error: unknown) =>
+            setMachineState({ status: DISCONNECTED, error })
+          );
+      }
+      // TODO: Disconnect from Viam
     }
 
-    // TODO: Get a ViamClient
+    // Get a ViamClient
     if (viamState.status === DISCONNECTED) {
       console.log("Connecting to Viam");
       getViamClinet(credentials)
