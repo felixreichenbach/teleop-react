@@ -4,6 +4,7 @@ import { LineChart } from "@mui/x-charts/LineChart";
 
 export interface SensorReadingsMUIXProps {
   sensorClient?: SensorClient;
+  seriesKeys: string[]; // Sensor reading keys to display
 }
 
 // Sensor reading structure
@@ -20,7 +21,7 @@ type SeriesData = {
 
 // Sensor readings component
 export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
-  const { sensorClient } = props;
+  const { sensorClient, seriesKeys } = props;
   const [readings, setReadings] = useState<SensorReading[]>([]);
 
   useEffect(() => {
@@ -47,18 +48,12 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
     return () => clearInterval(intervall);
   }, []);
 
-  // Configure the series to be displayed out of the sensor readings
-  const seriesConfig = [
-    { label: "a", data: [] },
-    { label: "b", data: [] },
-  ];
-
   // Loop over seriesList and fill series with readings data
-  const series: SeriesData[] = seriesConfig.map((config) => {
+  const series: SeriesData[] = seriesKeys.map((key) => {
     return {
-      label: config.label,
+      label: key,
       data: readings.map((reading) => {
-        return reading[config.label] || 0;
+        return reading[key] || 0;
       }),
     };
   });
