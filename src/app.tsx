@@ -30,12 +30,19 @@ export const App = (): JSX.Element => {
             <div className="flex flex-col">
               <div className="flex flex-row border-2">
                 <div className="basis-1/2 border-2">
-                  <SensorChart sensorClient={sensorClient}></SensorChart>
+                  <SensorChart
+                    sensorClient={sensorClient}
+                    seriesKeys={["a", "b"]} // Configure the sensor reading keys you want to display on the chart
+                  ></SensorChart>
                 </div>
                 <div className="basis-1/2 border-2">
                   <ViamCloud viamClient={viamClient} />
                 </div>
               </div>
+              <SensorChart
+                sensorClient={sensorClient}
+                seriesKeys={["c"]} // Configure the sensor reading keys you want to display on the chart
+              ></SensorChart>
             </div>
           ) : null}
         </div>
