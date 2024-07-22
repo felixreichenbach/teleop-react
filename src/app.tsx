@@ -1,14 +1,13 @@
 import { ConnectForm } from "./components/connect-form.js";
 import { useStore } from "./state.js";
 
-import { SensorReadings } from "./components/SensorReadings.js";
 import { ViamCloud } from "./components/ViamCloud.js";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { SensorChart } from "./components/SensorChart.js";
 
 export const App = (): JSX.Element => {
-
   const {
     machineStatus,
     machineClient,
@@ -28,12 +27,14 @@ export const App = (): JSX.Element => {
         </div>
         <div>
           {machineClient ? (
-            <div className="flex flex-row border-2">
-              <div className="basis-1/2 border-2">
-                <SensorReadings sensorClient={sensorClient} />
-              </div>
-              <div className="basis-1/2 border-2">
-                <ViamCloud viamClient={viamClient} />
+            <div className="flex flex-col">
+              <div className="flex flex-row border-2">
+                <div className="basis-1/2 border-2">
+                  <SensorChart sensorClient={sensorClient}></SensorChart>
+                </div>
+                <div className="basis-1/2 border-2">
+                  <ViamCloud viamClient={viamClient} />
+                </div>
               </div>
             </div>
           ) : null}
