@@ -1,6 +1,6 @@
 # React Tele-operation Example
 
-This example project allows you to stream a video from a Viam Rover and control its movements with your keyboard or mouse.
+This example project allows you to connect to a running Viam RDK and display real time sensor data directly from a machine as well as access historic data stored in the Viam cloud platform through a single authenticated client application.
 
 ## Setup
 
@@ -23,8 +23,3 @@ VITE_ROBOT_KEY=super-secret-key
 npm start
 ```
 
-### Base Project Template
-
-This example assumes that you are working inside the Viam TypeScript SDK repository. If you want to use this example as a base for your project, make the following changes:
-
-- You will also need to rename the components in the example code to match the actual component names in your configuration, for example, the camera could be named "cam" here but "camera" in your configuration.
