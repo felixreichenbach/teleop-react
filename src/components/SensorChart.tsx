@@ -2,12 +2,7 @@ import { useEffect, useState } from "react";
 import type { SensorClient } from "@viamrobotics/sdk";
 import { LineChart } from "@mui/x-charts/LineChart";
 
-//Create constant of timestamps for initial chart data at one second interval for 10 data points
-const initTimestamps: SensorReading[] = Array.from({ length: 10 }, (_, i) => {
-  return { timestamp: new Date(Date.now() - 1000 * i) };
-});
-initTimestamps.reverse();
-
+// Sensor readings component properties
 export interface SensorReadingsMUIXProps {
   sensorClient?: SensorClient;
   seriesKeys: string[]; // Sensor reading keys to display
@@ -22,8 +17,15 @@ type SensorReading = {
 // Sensor readings component
 export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
   const { sensorClient, seriesKeys } = props;
-  const [readings, setReadings] = useState<SensorReading[]>(initTimestamps);
+  // Initialize readings with timestamps and null values for each provided seriesKey in props
+  const [readings, setReadings] = useState<SensorReading[]>([]);
 
+  // Uses default series configuration for each provided key in seriesKeys prop
+  const series = seriesKeys.map((key) => {
+    return { dataKey: key, showMark: false };
+  });
+
+  // Poll sensor readings every second
   useEffect(() => {
     const intervall = setInterval(() => {
       sensorClient?.getReadings().then((reading) => {
@@ -37,33 +39,32 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
         // Update readings
         setReadings((prevData) => {
           const newData = [...prevData];
-          if (newData.length === 10) {
+          // Keep only 10 data points
+          if (newData.length >= 10) {
             newData.shift();
           }
           newData.push(...[sensorReading]);
           return newData;
         });
       });
-    }, 1000);
+    }, 1000); // Poll every second
     return () => clearInterval(intervall);
   }, []);
-
-  // TODO: initial chart data doesn't include the labels for the series -> throws an error reg. non numeric fields
-  console.log(readings);
 
   return (
     <LineChart
       width={500}
       height={300}
-      series={[{ dataKey: "a" }, { dataKey: "b" }]}
+      series={series}
+      dataset={readings}
       xAxis={[
         {
           scaleType: "time",
           dataKey: "timestamp",
-          // TODO: Optimize x-axis labels display: https://mui.com/x/react-charts/axis/#automatic-tick-position and use this: https://mui.com/x/react-charts/lines/#using-a-dataset
+          min: new Date(Date.now() - 10000), // Display the last 10 seconds
         },
       ]}
-      dataset={readings}
+      yAxis={[{ min: 0 }]}
     />
   );
 };
