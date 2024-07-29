@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import type { SensorClient } from "@viamrobotics/sdk";
 import { LineChart } from "@mui/x-charts/LineChart";
 
+//Create constant of timestamps for initial chart data at one second interval for 10 data points
+const initTimestamps: SensorReading[] = Array.from({ length: 10 }, (_, i) => {
+  return { timestamp: new Date(Date.now() - 1000 * i) };
+});
+initTimestamps.reverse();
+
 export interface SensorReadingsMUIXProps {
   sensorClient?: SensorClient;
   seriesKeys: string[]; // Sensor reading keys to display
@@ -22,7 +28,7 @@ type SeriesData = {
 // Sensor readings component
 export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
   const { sensorClient, seriesKeys } = props;
-  const [readings, setReadings] = useState<SensorReading[]>([]);
+  const [readings, setReadings] = useState<SensorReading[]>(initTimestamps);
 
   useEffect(() => {
     const intervall = setInterval(() => {
@@ -67,6 +73,7 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
         {
           scaleType: "time",
           data: readings.map((reading) => reading.timestamp),
+          // TODO: Optimize x-axis labels display: https://mui.com/x/react-charts/axis/#automatic-tick-position and use this: https://mui.com/x/react-charts/lines/#using-a-dataset
         },
       ]}
     />
