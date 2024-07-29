@@ -19,12 +19,6 @@ type SensorReading = {
   [key: string]: any;
 };
 
-// Chart series data structure
-type SeriesData = {
-  label: string;
-  data: number[];
-};
-
 // Sensor readings component
 export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
   const { sensorClient, seriesKeys } = props;
@@ -54,28 +48,22 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
     return () => clearInterval(intervall);
   }, []);
 
-  // Loop over seriesList and fill series with readings data
-  const series: SeriesData[] = seriesKeys.map((key) => {
-    return {
-      label: key,
-      data: readings.map((reading) => {
-        return reading[key] || 0;
-      }),
-    };
-  });
+  // TODO: initial chart data doesn't include the labels for the series -> throws an error reg. non numeric fields
+  console.log(readings);
 
   return (
     <LineChart
       width={500}
       height={300}
-      series={series}
+      series={[{ dataKey: "a" }, { dataKey: "b" }]}
       xAxis={[
         {
           scaleType: "time",
-          data: readings.map((reading) => reading.timestamp),
+          dataKey: "timestamp",
           // TODO: Optimize x-axis labels display: https://mui.com/x/react-charts/axis/#automatic-tick-position and use this: https://mui.com/x/react-charts/lines/#using-a-dataset
         },
       ]}
+      dataset={readings}
     />
   );
 };
