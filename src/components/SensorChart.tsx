@@ -73,7 +73,7 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
         {
           scaleType: "time",
           data: readings.map((reading) => reading.timestamp),
-          // TODO: Optimize x-axis labels display: https://mui.com/x/react-charts/axis/#automatic-tick-position
+          // TODO: Optimize x-axis labels display: https://mui.com/x/react-charts/axis/#automatic-tick-position and use this: https://mui.com/x/react-charts/lines/#using-a-dataset
         },
       ]}
     />

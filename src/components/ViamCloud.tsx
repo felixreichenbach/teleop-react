@@ -7,6 +7,8 @@ export interface ViamCloudProps {
   viamClient?: ViamClient;
 }
 
+// TODO: Implement a component that queries data from ViamCloud using MQL: https://github.com/viam-soleng/viam-grafana-mql/blob/main/src/viamData.ts
+
 // Date range
 type DateRange = {
   startTime: Dayjs | null;
