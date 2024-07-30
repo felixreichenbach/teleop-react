@@ -8,10 +8,8 @@ import type {
 } from "@viamrobotics/sdk";
 import {
   getRobotClient,
-  getViamClinet,
-  //getBaseClient,
-  //getStreamClient,
-  //getStream,
+  getViamClient,
+  getStreamClient,
   getSensorClient,
   type RobotCredentials,
 } from "./client.js";
@@ -89,19 +87,18 @@ export const useStore = (): Store => {
   }
 
   const connectOrDisconnect = (credentials: RobotCredentials): void => {
-    console.log("Connecting to machine");
     if (machineState.status === DISCONNECTED) {
       console.log("Connecting to machine");
       setMachineState({ status: CONNECTING });
       getRobotClient(credentials)
         .then((client) => {
-          //const streamClient = getStreamClient(client);
+          const streamClient = getStreamClient(client);
           //const baseClient = getBaseClient(client);
           const sensorClient = getSensorClient(client);
           setMachineState({
             status: CONNECTED,
             client,
-            streamClient: undefined,
+            streamClient,
             baseClient: undefined,
             sensorClient,
           });
@@ -128,7 +125,7 @@ export const useStore = (): Store => {
     // Get a ViamClient
     if (viamState.status === DISCONNECTED) {
       console.log("Connecting to Viam");
-      getViamClinet(credentials)
+      getViamClient(credentials)
         .then((client) => {
           setViamState({ status: CONNECTED, client });
         })
@@ -144,6 +141,8 @@ export const useStore = (): Store => {
     machineStatus: machineState.status,
     machineClient:
       machineState.status === CONNECTED ? machineState.client : undefined,
+    streamClient:
+      machineState.status === CONNECTED ? machineState.streamClient : undefined,
     sensorClient:
       machineState.status === CONNECTED ? machineState.sensorClient : undefined,
     connectOrDisconnect: connectOrDisconnect,

@@ -6,7 +6,7 @@ import {
   type RobotClient,
   createViamClient,
   type ViamClient,
-} from '@viamrobotics/sdk';
+} from "@viamrobotics/sdk";
 
 export interface RobotCredentials {
   hostname: string;
@@ -26,26 +26,26 @@ export const getRobotClient = async (
   const { hostname, keyID, key } = credentials;
 
   return createRobotClient({
-    host:hostname,
+    host: hostname,
     credential: {
-      type: 'api-key' 
-      /* Replace "<API-KEY>" (including brackets) with your machine's api key */,
-      payload: key,
-    } 
-      /* Replace "<API-KEY-ID>" (including brackets) with your machine's api key id */,
-    authEntity: keyID,
-    signalingAddress: 'https://app.viam.com:443',
+      type: "api-key",
+      /* Replace "<API-KEY>" (including brackets) with your machine's api key */ payload:
+        key,
+    },
+    /* Replace "<API-KEY-ID>" (including brackets) with your machine's api key id */ authEntity:
+      keyID,
+    signalingAddress: "https://app.viam.com:443",
   });
 };
 
 // TODO: Add a function to get a ViamClient
-export const getViamClinet = async (  
+export const getViamClient = async (
   credentials: RobotCredentials
 ): Promise<ViamClient> => {
   const { keyID, key } = credentials;
   return createViamClient({
     credential: {
-      type: 'api-key',
+      type: "api-key",
       authEntity: keyID,
       payload: key,
     },
@@ -69,7 +69,7 @@ export const getStreamClient = (client: RobotClient): StreamClient => {
  * @returns A connected base client
  */
 export const getBaseClient = (client: RobotClient): BaseClient => {
-  return new BaseClient(client, 'viam_base');
+  return new BaseClient(client, "viam_base");
 };
 
 /**
@@ -79,5 +79,5 @@ export const getBaseClient = (client: RobotClient): BaseClient => {
  * @returns A connected sensor client
  */
 export const getSensorClient = (client: RobotClient): SensorClient => {
-  return new SensorClient(client, 'fake-sensor');
+  return new SensorClient(client, "fake-sensor");
 };
