@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { SensorChart } from "./components/realtime-chart.js";
 import { VideoStream } from "./components/video-stream.js";
+import { DoCommand } from "./components/do-command.js";
 
 export const App = (): JSX.Element => {
   const {
@@ -17,12 +18,13 @@ export const App = (): JSX.Element => {
     streamClient,
     connectOrDisconnect,
   } = useStore();
-  // Change the camera name to the camera / transform you want to use
+
+  // TODO: Change the camera name to the camera / transform you want to use
   const stream = useStream(streamClient, "transform");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <div className="flex flex-col max-w-7xl mx-auto">
+      <div className="flex flex-col max-w-7xl mx-auto ">
         <div>
           <h1 className="text-3xl font-bold">Viam - Human Machine Interface</h1>
         </div>
@@ -34,18 +36,21 @@ export const App = (): JSX.Element => {
             <div className="flex flex-col border-2 rounded-xl">
               <div className="flex flex-row">
                 <div className="basis-1/2">
-                  <SensorChart
-                    sensorClient={sensorClient}
-                    seriesKeys={["a", "b", "c"]} // Configure the sensor reading keys you want to display on the chart
-                  ></SensorChart>
+                  <VideoStream stream={stream}></VideoStream>
                 </div>
-                <div className="basis-1/2">
-                  <ViamCloud viamClient={viamClient} />
+                <div className="basis-1/2 content-center">
+                  <DoCommand machineClient={machineClient}></DoCommand>
                 </div>
               </div>
               <div className="flex flex-row">
                 <div className="basis-1/2">
-                  <VideoStream stream={stream}></VideoStream>
+                  <SensorChart
+                    sensorClient={sensorClient}
+                    seriesKeys={["a", "b", "c"]} // TODO: Configure the sensor reading keys you want to display on the chart
+                  ></SensorChart>
+                </div>
+                <div className="basis-1/2">
+                  <ViamCloud viamClient={viamClient} />
                 </div>
               </div>
             </div>
