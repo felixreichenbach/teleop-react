@@ -1,4 +1,4 @@
-import { useRef, useEffect, type ReactNode } from 'react';
+import { useRef, useEffect, type ReactNode } from "react";
 
 export interface VideoStreamProps {
   stream?: MediaStream;
@@ -16,7 +16,7 @@ export const VideoStream = (props: VideoStreamProps): JSX.Element => {
   }, [stream]);
 
   return (
-    <div className='relative inline-flex p-4'>
+    <div className="relative inline-flex p-4">
       <video ref={videoRef} autoPlay muted />
       {children}
     </div>
