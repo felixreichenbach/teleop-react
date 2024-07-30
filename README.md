@@ -13,7 +13,7 @@ npm install
 The connection hostname and secret fields can be pre-filled from a `.env` file in the `viam-hmi` directory. This step is optional, you can enter the information into the login form manually later as well.
 
 ```ini
-# teleop-react/.env
+# viam-hmi/.env
 VITE_ROBOT_HOSTNAME=my-cool-robot.viam.cloud
 VITE_ROBOT_KEY_ID=key-id
 VITE_ROBOT_KEY=super-secret-key
