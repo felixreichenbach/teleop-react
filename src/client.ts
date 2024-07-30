@@ -69,6 +69,7 @@ export const getStreamClient = (client: RobotClient): StreamClient => {
  * @returns A connected base client
  */
 export const getBaseClient = (client: RobotClient): BaseClient => {
+  // TODO: Replace "viam_base" with the name of the base you want to use
   return new BaseClient(client, "viam_base");
 };
 
@@ -79,5 +80,6 @@ export const getBaseClient = (client: RobotClient): BaseClient => {
  * @returns A connected sensor client
  */
 export const getSensorClient = (client: RobotClient): SensorClient => {
+  // TODO: Replace "fake-sensor" with the name of the sensor you want to use
   return new SensorClient(client, "fake-sensor");
 };
