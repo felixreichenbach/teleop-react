@@ -4,13 +4,13 @@ This example project allows you to connect to a running Viam RDK and display rea
 
 ## Setup
 
-First, follow the setup instructions for the repository in `CONTRIBUTING.md`. Then, install development dependencies for the demo and launch a dev server.
+Install development dependencies for the application:
 
 ```shell
 npm install
 ```
 
-The connection hostname and secret fields can be pre-filled from a `.env` file in the `viam-hmi` directory. You have to set these before running npm start.
+The connection hostname and secret fields can be pre-filled from a `.env` file in the `viam-hmi` directory. This step is optional, you can enter the information into the login form manually later as well.
 
 ```ini
 # teleop-react/.env
@@ -18,6 +18,7 @@ VITE_ROBOT_HOSTNAME=my-cool-robot.viam.cloud
 VITE_ROBOT_KEY_ID=key-id
 VITE_ROBOT_KEY=super-secret-key
 ```
+Launch the development server
 
 ```shell
 npm start
