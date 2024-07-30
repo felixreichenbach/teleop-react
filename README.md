@@ -18,7 +18,7 @@ VITE_ROBOT_HOSTNAME=my-cool-robot.viam.cloud
 VITE_ROBOT_KEY_ID=key-id
 VITE_ROBOT_KEY=super-secret-key
 ```
-Launch the development server
+Launch the development server:
 
 ```shell
 npm start
