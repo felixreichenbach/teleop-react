@@ -5,7 +5,7 @@ import { ViamCloud } from "./components/historic-data.js";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { SensorChart } from "./components/realtime-chart.js";
+import { SensorChart } from "./components/realtime-data.js";
 import { VideoStream } from "./components/video-stream.js";
 import { DoCommand } from "./components/do-command.js";
 
@@ -13,14 +13,14 @@ export const App = (): JSX.Element => {
   const {
     machineStatus,
     machineClient,
-    //sensorClient,
     viamClient,
     streamClient,
     connectOrDisconnect,
   } = useStore();
 
   // TODO: Change the camera name to the camera / transform you want to use
-  const stream = useStream(streamClient, "transform");
+  // or add additional streams for multiple cameras
+  const stream = useStream(streamClient, "camera");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -46,6 +46,7 @@ export const App = (): JSX.Element => {
                 <div className="basis-1/2">
                   <SensorChart
                     machineClient={machineClient}
+                    sensorName="fake-sensor" // TODO: Configure the sensor name you want to use
                     seriesKeys={["a", "b", "c"]} // TODO: Configure the sensor reading keys you want to display on the chart
                   ></SensorChart>
                 </div>
