@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import type { SensorClient } from "@viamrobotics/sdk";
+import { SensorClient, type RobotClient } from "@viamrobotics/sdk";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 // Sensor readings component properties
 export interface SensorReadingsMUIXProps {
-  sensorClient?: SensorClient;
+  machineClient: RobotClient;
   seriesKeys: string[]; // Sensor reading keys to display
 }
 
@@ -16,7 +16,9 @@ type SensorReading = {
 
 // Sensor readings component
 export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
-  const { sensorClient, seriesKeys } = props;
+  const { machineClient, seriesKeys } = props;
+  // TODO: Replace "fake-sensor" with the sensor name you want to use
+  const sensorClient = new SensorClient(machineClient, "fake-sensor");
   // Initialize readings with timestamps and null values for each provided seriesKey in props
   const [readings, setReadings] = useState<SensorReading[]>([]);
 

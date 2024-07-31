@@ -13,7 +13,7 @@ export const App = (): JSX.Element => {
   const {
     machineStatus,
     machineClient,
-    sensorClient,
+    //sensorClient,
     viamClient,
     streamClient,
     connectOrDisconnect,
@@ -45,7 +45,7 @@ export const App = (): JSX.Element => {
               <div className="flex flex-row">
                 <div className="basis-1/2">
                   <SensorChart
-                    sensorClient={sensorClient}
+                    machineClient={machineClient}
                     seriesKeys={["a", "b", "c"]} // TODO: Configure the sensor reading keys you want to display on the chart
                   ></SensorChart>
                 </div>
