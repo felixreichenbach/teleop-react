@@ -1,6 +1,6 @@
 {
-  "name": "@viamrobotics/react-teleop-sdk-example",
-  "description": "An example tele-operation application using @viamrobotics/sdk",
+  "name": "@felixreichenbach/viam-hmi",
+  "description": "A Viam HMI example application using @viamrobotics/sdk",
   "type": "module",
   "scripts": {
     "start": "vite dev",
