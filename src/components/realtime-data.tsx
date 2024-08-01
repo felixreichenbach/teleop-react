@@ -18,9 +18,7 @@ type SensorReading = {
 // Sensor readings component
 export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
   const { machineClient, sensorName, seriesKeys } = props;
-  // TODO: Replace "fake-sensor" with the sensor name you want to use
   const sensorClient = new SensorClient(machineClient, sensorName);
-  // Initialize readings with timestamps and null values for each provided seriesKey in props
   const [readings, setReadings] = useState<SensorReading[]>([]);
 
   // Uses default series configuration for each provided key in seriesKeys prop

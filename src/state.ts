@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { ViamClient, RobotClient, StreamClient } from "@viamrobotics/sdk";
 import {
   getRobotClient,
@@ -130,37 +130,4 @@ export const useStore = (): Store => {
       machineState.status === CONNECTED ? machineState.streamClient : undefined,
     connectOrDisconnect: connectOrDisconnect,
   };
-};
-
-export const useStream = (
-  streamClient: StreamClient | undefined,
-  cameraName: string
-): MediaStream | undefined => {
-  const okToConnectRef = useRef(true);
-  const [stream, setStream] = useState<MediaStream | undefined>();
-
-  useEffect(() => {
-    if (streamClient && okToConnectRef.current) {
-      okToConnectRef.current = false;
-
-      streamClient
-        .getStream(cameraName)
-        .then((mediaStream) => setStream(mediaStream))
-        .catch((error: unknown) => {
-          console.warn(`Unable to connect to camera ${cameraName}`, error);
-        });
-
-      return () => {
-        okToConnectRef.current = true;
-
-        streamClient.remove(cameraName).catch((error: unknown) => {
-          console.warn(`Unable to disconnect to camera ${cameraName}`, error);
-        });
-      };
-    }
-
-    return undefined;
-  }, [streamClient, cameraName]);
-
-  return stream;
 };

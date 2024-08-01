@@ -1,14 +1,13 @@
 import { ConnectForm } from "./components/connect-form.js";
-import { useStore, useStream } from "./state.js";
+import { useStore } from "./state.js";
 
 import { ViamCloud } from "./components/historic-data.js";
 
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { SensorChart } from "./components/realtime-data.js";
-import { VideoStream } from "./components/video-stream.js";
 import { DoCommand } from "./components/do-command.js";
-import { VideoSimple } from "./components/video-wip.js";
+import { VideoStream } from "./components/video-stream.js";
 
 export const App = (): JSX.Element => {
   const {
@@ -18,10 +17,6 @@ export const App = (): JSX.Element => {
     streamClient,
     connectOrDisconnect,
   } = useStore();
-
-  // TODO: Change the camera name to the camera / transform you want to use
-  // or add additional streams for multiple cameras
-  //const stream = useStream(streamClient, "camera");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -38,7 +33,10 @@ export const App = (): JSX.Element => {
               <div className="flex flex-row">
                 <div className="basis-1/2">
                   {streamClient ? (
-                    <VideoSimple streamClient={streamClient} />
+                    <VideoStream
+                      streamClient={streamClient}
+                      cameraName="camera" // TODO: Specify the camera name you want to use
+                    />
                   ) : null}
                 </div>
                 <div className="basis-1/2 content-center">
@@ -49,8 +47,8 @@ export const App = (): JSX.Element => {
                 <div className="basis-1/2">
                   <SensorChart
                     machineClient={machineClient}
-                    sensorName="fake-sensor" // TODO: Configure the sensor name you want to use
-                    seriesKeys={["a", "b", "c"]} // TODO: Configure the sensor reading keys you want to display on the chart
+                    sensorName="fake-sensor" // TODO: Specify the sensor name you want to use
+                    seriesKeys={["a", "b", "c"]} // TODO: Specify the sensor reading keys you want to display on the chart
                   ></SensorChart>
                 </div>
                 <div className="basis-1/2">
