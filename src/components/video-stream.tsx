@@ -33,7 +33,7 @@ export const VideoStream = (props: VideoStreamProps): JSX.Element => {
     }
     return () => {
       if (stream && stream?.active) {
-        streamClient.remove("camera").catch((error: unknown) => {
+        streamClient.remove(cameraName).catch((error: unknown) => {
           console.warn(`Unable to disconnect to camera ${cameraName}`, error);
           okToConnectRef.current = true;
         });
