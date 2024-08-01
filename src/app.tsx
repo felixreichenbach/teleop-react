@@ -8,6 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { SensorChart } from "./components/realtime-data.js";
 import { VideoStream } from "./components/video-stream.js";
 import { DoCommand } from "./components/do-command.js";
+import { VideoSimple } from "./components/video-wip.js";
 
 export const App = (): JSX.Element => {
   const {
@@ -20,7 +21,7 @@ export const App = (): JSX.Element => {
 
   // TODO: Change the camera name to the camera / transform you want to use
   // or add additional streams for multiple cameras
-  const stream = useStream(streamClient, "camera");
+  //const stream = useStream(streamClient, "camera");
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -36,7 +37,9 @@ export const App = (): JSX.Element => {
             <div className="flex flex-col border-2 rounded-xl">
               <div className="flex flex-row">
                 <div className="basis-1/2">
-                  <VideoStream stream={stream}></VideoStream>
+                  {streamClient ? (
+                    <VideoSimple streamClient={streamClient} />
+                  ) : null}
                 </div>
                 <div className="basis-1/2 content-center">
                   <DoCommand machineClient={machineClient}></DoCommand>
