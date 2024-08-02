@@ -1,8 +1,7 @@
 import { useState } from "react";
-import type { ViamClient, RobotClient, StreamClient } from "@viamrobotics/sdk";
+import type { ViamClient, RobotClient } from "@viamrobotics/sdk";
 import {
   getRobotClient,
-  getStreamClient,
   getViamClient,
   type RobotCredentials,
 } from "./client.js";
@@ -33,7 +32,6 @@ interface ViamClientStateTransitioning {
 interface MachineClientStateConnected {
   status: typeof CONNECTED;
   client: RobotClient;
-  streamClient: StreamClient | undefined;
 }
 
 interface ViamClientStateConnected {
@@ -59,7 +57,6 @@ export interface Store {
   machineClient?: RobotClient;
   viamStatus: MachineClientStatus;
   viamClient?: ViamClient;
-  streamClient?: StreamClient;
   connectOrDisconnect: (credentials: RobotCredentials) => unknown;
 }
 
@@ -81,11 +78,9 @@ export const useStore = (): Store => {
       setMachineState({ status: CONNECTING });
       getRobotClient(credentials)
         .then((client) => {
-          const streamClient = getStreamClient(client);
           setMachineState({
             status: CONNECTED,
             client,
-            streamClient,
           });
         })
         .catch((error: unknown) =>
@@ -126,8 +121,6 @@ export const useStore = (): Store => {
     machineStatus: machineState.status,
     machineClient:
       machineState.status === CONNECTED ? machineState.client : undefined,
-    streamClient:
-      machineState.status === CONNECTED ? machineState.streamClient : undefined,
     connectOrDisconnect: connectOrDisconnect,
   };
 };

@@ -1,6 +1,5 @@
 import {
   createRobotClient,
-  StreamClient,
   type RobotClient,
   createViamClient,
   type ViamClient,
@@ -48,14 +47,4 @@ export const getViamClient = async (
       payload: key,
     },
   });
-};
-
-/**
- * StreamClient factory
- *
- * @param client A connected RobotClient
- * @returns A connected stream client
- */
-export const getStreamClient = (client: RobotClient): StreamClient => {
-  return new StreamClient(client);
 };

@@ -3,11 +3,18 @@ import { SensorClient, type RobotClient } from "@viamrobotics/sdk";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 // Sensor readings component properties
-export interface SensorReadingsMUIXProps {
+export interface SensorChartProps {
   machineClient: RobotClient;
-  sensorName: string;
-  seriesKeys: string[]; // Sensor reading keys to display
+  config: Config;
 }
+
+// Data collection configuration
+type Config = {
+  pollInterval: number; // Poll interval in hz (1hz = 1/s)
+  timespan: number; // Time span to display in seconds
+  sensorName: string; // Sensor name
+  readingKeys: string[]; // Sensor reading keys to display
+};
 
 // Sensor reading structure
 type SensorReading = {
@@ -16,18 +23,21 @@ type SensorReading = {
 };
 
 // Sensor readings component
-export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
-  const { machineClient, sensorName, seriesKeys } = props;
-  const sensorClient = new SensorClient(machineClient, sensorName);
+export const SensorChart = (props: SensorChartProps): JSX.Element => {
+  const { machineClient, config } = props;
   const [readings, setReadings] = useState<SensorReading[]>([]);
-
   // Uses default series configuration for each provided key in seriesKeys prop
-  const series = seriesKeys.map((key) => {
+  const series = config.readingKeys.map((key) => {
     return { dataKey: key, showMark: false };
   });
 
+  const intervalMS = 1000 / config.pollInterval;
+  const timespanMS = config.timespan * 1000;
+  const bufferSize = config.timespan / (1 / config.pollInterval);
+
   // Poll sensor readings every second
   useEffect(() => {
+    const sensorClient = new SensorClient(machineClient, config.sensorName);
     const intervall = setInterval(() => {
       sensorClient?.getReadings().then((reading) => {
         const sensorReading: SensorReading = { timestamp: new Date() };
@@ -40,15 +50,15 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
         // Update readings
         setReadings((prevData) => {
           const newData = [...prevData];
-          // Keep only 10 data points
-          if (newData.length >= 10) {
+          if (newData.length >= bufferSize) {
             newData.shift();
           }
           newData.push(...[sensorReading]);
           return newData;
         });
       });
-    }, 1000); // Poll every second
+    }, intervalMS);
+
     return () => clearInterval(intervall);
   }, []);
 
@@ -62,7 +72,8 @@ export const SensorChart = (props: SensorReadingsMUIXProps): JSX.Element => {
         {
           scaleType: "time",
           dataKey: "timestamp",
-          min: new Date(Date.now() - 10000), // Display the last 10 seconds
+          min: new Date(Date.now() - timespanMS),
+          max: new Date(),
         },
       ]}
       yAxis={[{ min: 0 }]}
