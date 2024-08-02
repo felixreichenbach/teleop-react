@@ -10,13 +10,8 @@ import { DoCommand } from "./components/do-command.js";
 import { VideoStream } from "./components/video-stream.js";
 
 export const App = (): JSX.Element => {
-  const {
-    machineStatus,
-    machineClient,
-    viamClient,
-    streamClient,
-    connectOrDisconnect,
-  } = useStore();
+  const { machineStatus, machineClient, viamClient, connectOrDisconnect } =
+    useStore();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -32,12 +27,10 @@ export const App = (): JSX.Element => {
             <div className="flex flex-col border-2 rounded-xl">
               <div className="flex flex-row">
                 <div className="basis-1/2">
-                  {streamClient ? (
-                    <VideoStream
-                      streamClient={streamClient}
-                      cameraName="camera" // TODO: Specify the camera name you want to use
-                    />
-                  ) : null}
+                  <VideoStream
+                    machineClient={machineClient}
+                    cameraName="camera" // TODO: Specify the camera name you want to use
+                  />
                 </div>
                 <div className="basis-1/2 content-center">
                   <DoCommand machineClient={machineClient}></DoCommand>
@@ -47,8 +40,12 @@ export const App = (): JSX.Element => {
                 <div className="basis-1/2">
                   <SensorChart
                     machineClient={machineClient}
-                    sensorName="fake-sensor" // TODO: Specify the sensor name you want to use
-                    seriesKeys={["a", "b", "c"]} // TODO: Specify the sensor reading keys you want to display on the chart
+                    config={{
+                      pollInterval: 1, // TODO: Specify the poll interval in hz (1hz = 1/s)
+                      timespan: 10, // TODO: Specify time span to display in seconds
+                      sensorName: "fake-sensor", // TODO: Specify the sensor name you want to use
+                      readingKeys: ["a", "b", "c"], // TODO: Specify the sensor reading keys you want to display on the chart
+                    }}
                   ></SensorChart>
                 </div>
                 <div className="basis-1/2">

@@ -1,14 +1,14 @@
-import type { StreamClient } from "@viamrobotics/sdk";
+import { StreamClient, type RobotClient } from "@viamrobotics/sdk";
 import { useRef, useEffect, type ReactNode, useState } from "react";
 
 export interface VideoStreamProps {
-  streamClient: StreamClient;
   cameraName: string;
+  machineClient: RobotClient;
   children?: ReactNode;
 }
 
 export const VideoStream = (props: VideoStreamProps): JSX.Element => {
-  const { streamClient, cameraName, children } = props;
+  const { machineClient, cameraName, children } = props;
   const videoRef = useRef<HTMLVideoElement>(null);
   const okToConnectRef = useRef(true);
   const [stream, setStream] = useState<MediaStream | undefined>(undefined);
@@ -18,6 +18,7 @@ export const VideoStream = (props: VideoStreamProps): JSX.Element => {
   }
 
   useEffect(() => {
+    const streamClient = new StreamClient(machineClient);
     if (streamClient && okToConnectRef.current) {
       okToConnectRef.current = false;
       streamClient
