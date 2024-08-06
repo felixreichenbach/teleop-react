@@ -1,4 +1,4 @@
-import { RobotClient, SensorClient } from "@viamrobotics/sdk";
+import { RobotClient, SensorClient, type StructType } from "@viamrobotics/sdk";
 import type { ResourceName } from "@viamrobotics/sdk/dist/gen/common/v1/common_pb";
 import {
   useEffect,
@@ -41,8 +41,9 @@ export function DoCommand(props: DoCommandProps): JSX.Element {
       return;
     }
     const componenClient = new SensorClient(machineClient, selectedResource);
+    let parsed = JSON.parse(command);
     componenClient
-      .doCommand({ command })
+      .doCommand(parsed as StructType)
       .then((response) => {
         setResult(JSON.stringify(response));
       })
