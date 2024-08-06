@@ -39,24 +39,29 @@ export const SensorChart = (props: SensorChartProps): JSX.Element => {
   useEffect(() => {
     const sensorClient = new SensorClient(machineClient, config.sensorName);
     const intervall = setInterval(() => {
-      sensorClient?.getReadings().then((reading) => {
-        const sensorReading: SensorReading = { timestamp: new Date() };
-        // Extract values from sensor reading
-        for (const key in reading) {
-          if (reading[key] && typeof reading[key] === "number") {
-            sensorReading[key] = reading[key];
+      sensorClient
+        ?.getReadings()
+        .then((reading) => {
+          const sensorReading: SensorReading = { timestamp: new Date() };
+          // Extract values from sensor reading
+          for (const key in reading) {
+            if (reading[key] && typeof reading[key] === "number") {
+              sensorReading[key] = reading[key];
+            }
           }
-        }
-        // Update readings
-        setReadings((prevData) => {
-          const newData = [...prevData];
-          if (newData.length >= bufferSize) {
-            newData.shift();
-          }
-          newData.push(...[sensorReading]);
-          return newData;
+          // Update readings
+          setReadings((prevData) => {
+            const newData = [...prevData];
+            if (newData.length >= bufferSize) {
+              newData.shift();
+            }
+            newData.push(...[sensorReading]);
+            return newData;
+          });
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      });
     }, intervalMS);
 
     return () => clearInterval(intervall);
