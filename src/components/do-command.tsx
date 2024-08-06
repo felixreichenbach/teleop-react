@@ -1,5 +1,7 @@
 import { RobotClient, SensorClient } from "@viamrobotics/sdk";
+import type { ResourceName } from "@viamrobotics/sdk/dist/gen/common/v1/common_pb";
 import {
+  useEffect,
   useState,
   type ChangeEventHandler,
   type FormEventHandler,
@@ -10,19 +12,42 @@ export interface DoCommandProps {
 }
 
 export function DoCommand(props: DoCommandProps): JSX.Element {
-  // Get the component for which you want to run the command
-  const componenClient = new SensorClient(props.machineClient!, "fake-sensor");
+  const { machineClient } = props;
   const [command, setCommmand] = useState("");
+  const [result, setResult] = useState("");
+  const [resources, setResources] = useState<ResourceName.AsObject[]>();
+  const [selectedResource, setSelectedResource] = useState("");
+
+  useEffect(() => {
+    if (!machineClient) {
+      return;
+    }
+    machineClient
+      .resourceNames()
+      .then((res) => {
+        const filteredComponents = res.filter((resource) => {
+          return resource.subtype === "sensor";
+        });
+        setResources(filteredComponents);
+        setSelectedResource(filteredComponents[0]?.name ?? "");
+      })
+      .catch((error) => {
+        console.error("Failed to fetch resources: ", error.message);
+      });
+  }, []);
 
   const onSubmit: FormEventHandler = (event) => {
-    console.log("DoCommand: ", command);
+    if (!machineClient) {
+      return;
+    }
+    const componenClient = new SensorClient(machineClient, selectedResource);
     componenClient
       .doCommand({ command })
       .then((response) => {
-        console.log("DoCommand response: ", response);
+        setResult(JSON.stringify(response));
       })
       .catch((error) => {
-        console.error("DoCommand error: ", error);
+        setResult("error: " + error.message);
       });
     event.preventDefault();
   };
@@ -31,25 +56,56 @@ export function DoCommand(props: DoCommandProps): JSX.Element {
     setCommmand(event.target.value);
   };
 
+  const handleResourceChange: ChangeEventHandler<HTMLSelectElement> = (
+    event
+  ) => {
+    setSelectedResource(event.target.value);
+  };
+
   return (
-    <form onSubmit={onSubmit}>
+    <>
+      {" "}
       <div className="flex flex-col mb-1 p-4">
+        <form onSubmit={onSubmit}>
+          <label className="flex flex-col mb-1">
+            Select Resource:
+            <select
+              className="px-1 border-solid border-2 border-black"
+              value={selectedResource}
+              onChange={handleResourceChange}
+            >
+              {resources?.map((resource) => (
+                <option key={resource.name} value={resource.name}>
+                  {resource.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-col mb-1">
+            Commmand Input:
+            <textarea
+              className="px-1 border-solid border-2 border-black"
+              value={command}
+              onChange={handleCommand}
+              disabled={false}
+            />
+          </label>
+          <button
+            type="submit"
+            className="rounded self-end border-gray-500 border-2 px-1 float-right"
+          >
+            Run Command
+          </button>
+        </form>
         <label className="flex flex-col mb-1">
-          Input Commmand:
+          Command Response:
           <textarea
             className="px-1 border-solid border-2 border-black"
-            value={command}
-            onChange={handleCommand}
-            disabled={false}
+            value={result}
+            disabled={true}
           />
         </label>
-        <button
-          type="submit"
-          className="rounded self-end border-gray-500 border-2 px-1"
-        >
-          Run Command
-        </button>
       </div>
-    </form>
+    </>
   );
 }
