@@ -37,6 +37,7 @@ export function DoCommand(props: DoCommandProps): JSX.Element {
   }, []);
 
   const onSubmit: FormEventHandler = (event) => {
+    event.preventDefault();
     if (!machineClient) {
       return;
     }
@@ -45,12 +46,12 @@ export function DoCommand(props: DoCommandProps): JSX.Element {
     componenClient
       .doCommand(parsed as StructType)
       .then((response) => {
+        console.log(response);
         setResult(JSON.stringify(response));
       })
       .catch((error) => {
         setResult("error: " + error.message);
       });
-    event.preventDefault();
   };
 
   const handleCommand: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
