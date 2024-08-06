@@ -18,6 +18,7 @@
     "@mui/x-charts": "^7.11.0",
     "@mui/x-date-pickers": "^7.11.0",
     "@viamrobotics/sdk": "^0.19.0",
+    "bsonfy": "^1.0.2",
     "dayjs": "^1.11.12"
   },
   "devDependencies": {

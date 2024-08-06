@@ -3,7 +3,7 @@ import { useState, type FormEventHandler } from "react";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 
-export interface ViamCloudProps {
+export interface TabularByFilterProps {
   viamClient?: ViamClient;
 }
 
@@ -15,7 +15,7 @@ type DateRange = {
   endTime: Dayjs | null;
 };
 
-export function ViamCloud(props: ViamCloudProps): JSX.Element {
+export function TabularByFilter(props: TabularByFilterProps): JSX.Element {
   const dataClient = props.viamClient?.dataClient;
   const [data, setData] = useState<any>();
 
