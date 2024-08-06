@@ -42,9 +42,15 @@ export function DoCommand(props: DoCommandProps): JSX.Element {
       return;
     }
     const componenClient = new SensorClient(machineClient, selectedResource);
-    let parsed = JSON.parse(command);
+    let parsedCommand;
+    try {
+      parsedCommand = JSON.parse(command);
+    } catch (error) {
+      setResult("error: failed to parse command as JSON");
+      return;
+    }
     componenClient
-      .doCommand(parsed as StructType)
+      .doCommand(parsedCommand as StructType)
       .then((response) => {
         console.log(response);
         setResult(JSON.stringify(response));
