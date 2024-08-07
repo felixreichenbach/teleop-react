@@ -13,7 +13,7 @@ export interface TabularByMQLProps {
 
 // TODO: Implement a component that queries data from DataMQL using MQL: https://github.com/viam-soleng/viam-grafana-mql/blob/main/src/viamData.ts
 
-export function TabuleByMQL(props: TabularByMQLProps): JSX.Element {
+export function TabularByMQL(props: TabularByMQLProps): JSX.Element {
   const { viamClient, organizationID } = props;
 
   const [query, setQuery] = useState<string>("");

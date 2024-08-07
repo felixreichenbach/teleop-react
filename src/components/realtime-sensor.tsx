@@ -3,7 +3,7 @@ import { SensorClient, type RobotClient } from "@viamrobotics/sdk";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 // Sensor readings component properties
-export interface SensorChartProps {
+export interface RealTimeSensorProps {
   machineClient: RobotClient;
   config: Config;
 }
@@ -23,7 +23,7 @@ type SensorReading = {
 };
 
 // Sensor readings component
-export const SensorChart = (props: SensorChartProps): JSX.Element => {
+export const RealTimeSensor = (props: RealTimeSensorProps): JSX.Element => {
   const { machineClient, config } = props;
   const [readings, setReadings] = useState<SensorReading[]>([]);
   // Uses default series configuration for each provided key in seriesKeys prop
