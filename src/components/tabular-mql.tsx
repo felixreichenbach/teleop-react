@@ -16,19 +16,16 @@ export interface TabularByMQLProps {
 export function TabularByMQL(props: TabularByMQLProps): JSX.Element {
   const { viamClient, organizationID } = props;
 
-  const [query, setQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>('[{ "$limit": 1 }]');
   const [result, setResult] = useState("");
 
   const handleQuery: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
     setQuery(event.target.value);
   };
 
-  const handleResult: ChangeEventHandler<HTMLTextAreaElement> = (event) => {
-    setResult(event.target.value);
-  };
-
   const onSubmit: FormEventHandler = (event) => {
     event.preventDefault();
+    setResult("Executing query...");
     if (!viamClient?.dataClient) {
       return;
     }
@@ -61,12 +58,12 @@ export function TabularByMQL(props: TabularByMQLProps): JSX.Element {
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
+    <div className="flex flex-auto">
+      <form onSubmit={onSubmit} className="basis-1/2 p-4">
         <label className="flex flex-col mb-1">
-          Query:
+          MQL Query:
           <textarea
-            className="px-1 border-solid border-2 border-black"
+            className="px-1 border-solid border-2 border-black basis-auto"
             name="query"
             value={query}
             onChange={handleQuery}
@@ -77,17 +74,19 @@ export function TabularByMQL(props: TabularByMQLProps): JSX.Element {
           className="rounded self-end border-gray-500 border-2 px-1 float-right"
           type="submit"
         >
-          Run Query
+          Execute Query
         </button>
       </form>
-      <label className="flex flex-col mb-1">
-        Result:
-        <textarea
-          className="px-1 border-solid border-2 border-black"
-          value={result}
-          disabled={true}
-        />
-      </label>
-    </>
+      <div className="basis-1/2 p-4">
+        <label className="flex flex-col mb-1">
+          Query Result:
+          <textarea
+            className="px-1 border-solid border-2 border-black"
+            value={result}
+            disabled={true}
+          />
+        </label>
+      </div>
+    </div>
   );
 }
