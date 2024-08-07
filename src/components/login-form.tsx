@@ -37,7 +37,7 @@ const INITIAL_HOSTNAME = import.meta.env.VITE_ROBOT_HOSTNAME ?? "";
 const INITIAL_KEY_ID = import.meta.env.VITE_ROBOT_KEY_ID ?? "";
 const INITIAL_KEY = import.meta.env.VITE_ROBOT_KEY ?? "";
 
-export const ConnectForm = (props: ConnectFormProps): JSX.Element => {
+export const LoginForm = (props: ConnectFormProps): JSX.Element => {
   const { status, onSubmit } = props;
   const [hostname, setHostname] = useState(INITIAL_HOSTNAME);
   const [keyID, setKeyID] = useState(INITIAL_KEY_ID);
